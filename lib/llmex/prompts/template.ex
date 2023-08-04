@@ -1,12 +1,9 @@
 defmodule Llmex.Prompts.Template do
-  defstruct [:template, :prompt]
+  defstruct [:template]
 
-  def new(args) do
-    args |> Keyword.validate!([:template])
-
+  def new(template) do
     struct(__MODULE__, %{
-      template: args[:template],
-      prompt: ""
+      template: template,
     })
   end
 

@@ -3,14 +3,15 @@ defmodule Llmex.Prompts.Template.Test do
   doctest Llmex.Prompts.Template
 
   test "new/1" do
-    template = Llmex.Prompts.Template.new(template: "test")
+    template = Llmex.Prompts.Template.new("test")
 
     assert template.template == "test"
   end
 
   test "prompt/2" do
-    template = Llmex.Prompts.Template.new(template: "Hello, <%= @name %>!")
-    prompt = template |> Llmex.Prompts.Template.prompt(name: "Kentaro")
+    prompt =
+      Llmex.Prompts.Template.new("Hello, <%= @name %>!")
+      |> Llmex.Prompts.Template.prompt(name: "Kentaro")
 
     assert prompt == "Hello, Kentaro!"
   end

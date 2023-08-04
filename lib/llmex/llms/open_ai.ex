@@ -3,11 +3,9 @@ defmodule Llmex.Llms.OpenAI do
 
   @default_client OpenAI
 
-  def new(args) do
-    config = struct(OpenAI.Config, args)
-
+  def new(config) do
     struct(__MODULE__, %{
-      config: config,
+      config: struct(OpenAI.Config, config),
       client: nil
     })
   end
