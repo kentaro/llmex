@@ -4,10 +4,10 @@ defmodule Llmex.Prompts.Template do
   def new(args) do
     args |> Keyword.validate!([:template])
 
-    %__MODULE__{
+    struct(__MODULE__, %{
       template: args[:template],
       prompt: ""
-    }
+    })
   end
 
   def prompt(template, args \\ []) do

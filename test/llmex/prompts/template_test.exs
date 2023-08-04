@@ -1,6 +1,6 @@
 defmodule Llmex.Prompts.Template.Test do
   use ExUnit.Case
-  doctest Llmex
+  doctest Llmex.Prompts.Template
 
   test "new/1" do
     template = Llmex.Prompts.Template.new(template: "test")
