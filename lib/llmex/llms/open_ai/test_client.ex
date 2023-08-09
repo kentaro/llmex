@@ -32,8 +32,11 @@ defmodule Llmex.Llms.OpenAI.TestClient do
     }
   }
 
-  def chat_completion(_args, _config) do
-    {:ok, @ok_response}
+  def chat_completion(args, _config) do
+    case args[:error] do
+      true -> {:error, @error_response}
+      _ -> {:ok, @ok_response}
+    end
   end
 
   def ok_response() do

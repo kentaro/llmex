@@ -39,7 +39,7 @@ defmodule Llmex.Llms.OpenAI do
           Llmex.Messages.new(messages ++ response_messages)
 
         :error ->
-          messages
+          Llmex.Messages.new(messages)
       end
 
     {status, response, response_messages}

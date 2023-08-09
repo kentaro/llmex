@@ -10,7 +10,7 @@ defmodule Llmex.Llms.OpenAI.Test do
            }
   end
 
-  test "generate/2" do
+  test "generate/2 with an ok response" do
     message = %{role: "user", content: "Hello, how are you?"}
     messages = Llmex.Messages.new(message)
 
@@ -29,6 +29,25 @@ defmodule Llmex.Llms.OpenAI.Test do
              :ok,
              Llmex.Llms.OpenAI.TestClient.ok_response(),
              response_messages
+           }
+  end
+
+  test "generate/2 with an error response" do
+    message = %{role: "user", content: "Hello, how are you?"}
+    messages = Llmex.Messages.new(message)
+
+    response =
+      Llmex.Llms.OpenAI.new(api_key: "api key")
+      |> Llmex.Llms.OpenAI.client(Llmex.Llms.OpenAI.TestClient)
+      |> Llmex.Llms.OpenAI.generate(
+        messages: messages,
+        error: true
+      )
+
+    assert response == {
+             :error,
+             Llmex.Llms.OpenAI.TestClient.error_response(),
+             messages
            }
   end
 end
