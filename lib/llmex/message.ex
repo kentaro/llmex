@@ -2,8 +2,33 @@ defmodule Llmex.Message do
   @keys [:role, :content, :name, :function_call]
   defstruct @keys
 
+  def new(args) when is_map(args) do
+    keywordlist =
+      args
+      |> Enum.into([], fn {k, v} ->
+        case is_atom(k) do
+          true ->
+            {k, v}
+
+          false ->
+            {String.to_existing_atom(k), v}
+        end
+      end)
+
+    new(keywordlist)
+  end
+
   def new(args) do
-    struct(__MODULE__, args)
+    message = struct(__MODULE__, args)
+
+    case message.function_call do
+      nil ->
+        message
+
+      _ ->
+        message
+        |> Map.put(:function_call, Llmex.FunctionCall.new(message.function_call))
+    end
   end
 
   def keys() do
