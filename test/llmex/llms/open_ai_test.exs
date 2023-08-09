@@ -2,6 +2,11 @@ defmodule Llmex.Llms.OpenAI.Test do
   use ExUnit.Case
   doctest Llmex.Llms.OpenAI
 
+  @message [
+    role: "user",
+    content: "Hello, how are you?"
+  ]
+
   test "new/1" do
     llm = Llmex.Llms.OpenAI.new(api_key: "api key")
 
@@ -11,19 +16,19 @@ defmodule Llmex.Llms.OpenAI.Test do
   end
 
   test "generate/2 with an ok response" do
-    message = %{role: "user", content: "Hello, how are you?"}
-    messages = Llmex.Messages.new(message)
+    message = Llmex.Message.new(@message)
 
     response =
       Llmex.Llms.OpenAI.new(api_key: "api key")
       |> Llmex.Llms.OpenAI.client(Llmex.Llms.OpenAI.TestClient)
-      |> Llmex.Llms.OpenAI.generate(messages: messages)
+      |> Llmex.Llms.OpenAI.generate(messages: [message])
 
     response_message =
       Llmex.Llms.OpenAI.TestClient.ok_response()
       |> get_in([:choices, Access.at(0), "message"])
+      |> Llmex.Message.new()
 
-    response_messages = Llmex.Messages.new([message, response_message])
+    response_messages = [message, response_message]
 
     assert response == {
              :ok,
@@ -33,21 +38,20 @@ defmodule Llmex.Llms.OpenAI.Test do
   end
 
   test "generate/2 with an error response" do
-    message = %{role: "user", content: "Hello, how are you?"}
-    messages = Llmex.Messages.new(message)
+    message = Llmex.Message.new(@message)
 
     response =
       Llmex.Llms.OpenAI.new(api_key: "api key")
       |> Llmex.Llms.OpenAI.client(Llmex.Llms.OpenAI.TestClient)
       |> Llmex.Llms.OpenAI.generate(
-        messages: messages,
+        messages: [message],
         error: true
       )
 
     assert response == {
              :error,
              Llmex.Llms.OpenAI.TestClient.error_response(),
-             messages
+             [message]
            }
   end
 end
