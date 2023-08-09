@@ -3,7 +3,7 @@ defmodule Llmex.Prompts.Template do
 
   def new(template) do
     struct(__MODULE__, %{
-      template: template,
+      template: template
     })
   end
 

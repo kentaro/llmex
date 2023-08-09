@@ -18,7 +18,7 @@ defmodule Llmex.Llms.OpenAI do
   end
 
   def generate(llm, args) do
-    messages = args[:messages]
+    messages = args[:messages] || []
     client = llm.client || @default_client
 
     {status, response} =

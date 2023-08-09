@@ -19,7 +19,7 @@ defmodule Llmex.Function.Test do
   test "new/1 with a Map" do
     arg = %{
       name: "test",
-      description: "test function",
+      description: "test function"
     }
 
     function = Llmex.Function.new(arg)
