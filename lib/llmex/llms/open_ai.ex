@@ -18,12 +18,30 @@ defmodule Llmex.Llms.OpenAI do
   end
 
   def generate(llm, args) do
-    messages = [messages: args[:messages].messages]
+    messages = args[:messages].messages
     client = llm.client || @default_client
 
-    client.chat_completion(
-      args |> Keyword.merge(messages),
-      llm.config
-    )
+    {status, response} =
+      client.chat_completion(
+        args |> Keyword.merge(messages: messages),
+        llm.config
+      )
+
+    response_messages =
+      case status do
+        :ok ->
+          response_messages =
+            response.choices
+            |> Enum.map(fn choice ->
+              choice |> Map.get("message")
+            end)
+
+          Llmex.Messages.new(messages ++ response_messages)
+
+        :error ->
+          messages
+      end
+
+    {status, response, response_messages}
   end
 end
