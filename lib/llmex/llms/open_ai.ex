@@ -1,11 +1,17 @@
 defmodule Llmex.Llms.OpenAI do
-  defstruct [:config, :client]
+  defstruct [:model, :config, :client]
 
+  @default_model "gpt-4"
   @default_client OpenAI
 
   def new(config) do
+    {model_config, client_config} =
+      config
+      |> Keyword.split([:model])
+
     struct(__MODULE__, %{
-      config: struct(OpenAI.Config, config),
+      model: model_config[:model] || @default_model,
+      config: struct(OpenAI.Config, client_config),
       client: nil
     })
   end
@@ -23,7 +29,7 @@ defmodule Llmex.Llms.OpenAI do
 
     {status, response} =
       client.chat_completion(
-        args,
+        Keyword.merge(args, [model: llm.model]),
         llm.config
       )
 
