@@ -29,7 +29,7 @@ defmodule Llmex.Llms.OpenAI do
 
     {status, response} =
       client.chat_completion(
-        Keyword.merge(args, [model: llm.model]),
+        Keyword.merge(args, model: llm.model),
         llm.config
       )
 
