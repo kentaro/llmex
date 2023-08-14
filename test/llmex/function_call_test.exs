@@ -11,9 +11,11 @@ defmodule Llmex.FunctionCall.Test do
     function = Llmex.FunctionCall.new(arg)
 
     assert function.name == arg["name"]
-    assert function.arguments == Jason.decode!(
-      arg["arguments"],
-      keys: :atoms
-    )
+
+    assert function.arguments ==
+             Jason.decode!(
+               arg["arguments"],
+               keys: :atoms
+             )
   end
 end

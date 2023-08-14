@@ -5,10 +5,11 @@ defmodule Llmex.FunctionCall do
   def new(args) do
     %__MODULE__{
       name: args["name"],
-      arguments: Jason.decode!(
-        args["arguments"],
-        keys: :atoms
-      )
+      arguments:
+        Jason.decode!(
+          args["arguments"],
+          keys: :atoms
+        )
     }
   end
 
