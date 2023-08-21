@@ -5,7 +5,7 @@ defmodule Llmex.Flow.Test do
   test "new/1" do
     flow = Llmex.Flow.new()
 
-    assert flow.steps == %{}
+    assert flow.steps == []
     assert is_pid(flow.state)
   end
 end
